@@ -17,19 +17,45 @@ public class ProductoService {
     @Autowired
     private ProductoRepository productoRepository;
 
+    
+    
+    public Producto findById(int id) {
+        return productoRepository.findById(id);
+    }
+    
+    
+    public Producto crearProducto(Producto producto) {
+        return productoRepository.save(producto);
+    }
+    
+    
     public List<Producto> findAll() {
         return productoRepository.findAll();
     }
 
-    public Producto findById(int id) {
-        return productoRepository.findById(id).get();
-    }
 
-    public Producto save(Producto producto) {
-        return productoRepository.save(producto);
-    }
-
-    public void delete (int id) {
-        productoRepository.deleteById(id);
+    
+    public Producto updateById(int id, Producto producto) {
+        Producto productoExistente = productoRepository.findById(id);
+        if (productoExistente != null) {
+            if (producto.getNombreProducto() != null) {
+                productoExistente.setNombreProducto(producto.getNombreProducto());
+            }
+            if (producto.getTipoProducto() != null) {
+                productoExistente.setTipoProducto(producto.getTipoProducto());
+            }
+            if (producto.getValor() >= 0) {
+                productoExistente.setValor(producto.getValor());
+            }
+            if (producto.getStock() >= 0) {
+                productoExistente.setStock(producto.getStock());
+            }
+            if (producto.getResena() != null) {
+                productoExistente.setResena(producto.getResena());
+            }
+            productoRepository.save(productoExistente);
+            return productoExistente; // O lanzar una excepción si el producto no existe
+        }
+    return null; // O lanzar una excepción si el producto no existe
     }
 }
