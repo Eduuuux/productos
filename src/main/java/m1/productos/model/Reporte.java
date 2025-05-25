@@ -2,7 +2,6 @@ package m1.productos.model;
 
 import java.time.LocalDate;
 
-import org.hibernate.annotations.Collate;
 import org.hibernate.annotations.ManyToAny;
 
 import jakarta.persistence.Column;
@@ -11,7 +10,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -34,7 +32,7 @@ public class Reporte {
     @Column(nullable = false)
     private LocalDate fechaReporte;
 
-    @ManyToOne
-    @JoinColumn(name = "id_producto", nullable = false)
+    @ManyToAny
+    @JoinColumn(name = "tipo_producto", nullable = false)
     private Producto producto;
 }
