@@ -24,8 +24,8 @@ public class ReporteService {
         return reporteRepository.findById(id);
     }
 
-public List<Reporte> findByTipoProducto(String tipoProducto) {
-    return reporteRepository.findByProducto_TipoProducto(tipoProducto);
+    public List<Reporte> findByTipoProducto(String tipoProducto) {
+    return reporteRepository.findByProductos_TipoProducto(tipoProducto);
 }
 
 }

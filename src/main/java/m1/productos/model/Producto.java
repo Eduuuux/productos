@@ -1,10 +1,13 @@
 package m1.productos.model;
 
+import java.util.Set;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -36,5 +39,7 @@ public class Producto {
     @Column(nullable = false)
     private String resena;
 
-
+    @ManyToMany(mappedBy = "productos")
+    private Set<Reporte> reportes;
 }
+

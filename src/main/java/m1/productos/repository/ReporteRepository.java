@@ -12,11 +12,11 @@ public interface ReporteRepository extends JpaRepository<Reporte, Integer>  {
     
     
     List<Reporte> findAll();
-    @SuppressWarnings("unchecked") 
+    @SuppressWarnings("unchecked")
     Reporte save(Reporte reporte);
     
     Reporte findById(int id);
 
-    List<Reporte> findByProducto_TipoProducto(String tipoProducto);
+    List<Reporte> findByProductos_TipoProducto(String tipoProducto);
 
 }

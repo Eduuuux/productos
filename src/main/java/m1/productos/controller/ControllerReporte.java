@@ -31,20 +31,13 @@ public class ControllerReporte {
         return new ResponseEntity<>(reportes, HttpStatus.OK);
     }
 
-    @PutMapping("/reporte/{tipo_producto}")
-        public ResponseEntity<List<Reporte>>listarPorTipo(@PathVariable String tipo_producto) {
+    @PutMapping("/reporte/{repo}")
+    public ResponseEntity<List<Reporte>> listarPorTipo(@PathVariable String tipo_producto) {
         List<Reporte> reportes = reporteService.findByTipoProducto(tipo_producto);
-        if (tipo_producto.toLowerCase().equals("perfume femenino")) {
-            return new ResponseEntity<>(reportes, HttpStatus.OK);
-        }
-        if (tipo_producto.toLowerCase().equals("perfume masculino")) {
-            return new ResponseEntity<>(reportes, HttpStatus.OK);
-        }
-        if (tipo_producto.toLowerCase().equals("perfume unisex")) {
-            return new ResponseEntity<>(reportes, HttpStatus.OK);
+        if (reportes.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(reportes, HttpStatus.OK);
-    }
-
-    }
+}
+}
 

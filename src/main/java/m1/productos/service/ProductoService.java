@@ -54,8 +54,17 @@ public class ProductoService {
                 productoExistente.setResena(producto.getResena());
             }
             productoRepository.save(productoExistente);
-            return productoExistente; // O lanzar una excepción si el producto no existe
+            return productoExistente;
         }
-    return null; // O lanzar una excepción si el producto no existe
+    return null;
+    }
+
+    public Producto deleteById(int id) {
+        Producto producto = productoRepository.findById(id);
+        if (producto != null) {
+            productoRepository.delete(producto);
+            return producto;
+        }
+        return null;
     }
 }

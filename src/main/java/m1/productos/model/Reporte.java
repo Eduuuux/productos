@@ -1,8 +1,7 @@
 package m1.productos.model;
 
 import java.time.LocalDate;
-
-import org.hibernate.annotations.ManyToAny;
+import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,6 +9,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,7 +33,12 @@ public class Reporte {
     @Column(nullable = false)
     private LocalDate fechaReporte;
 
-    @ManyToAny
-    @JoinColumn(name = "tipo_producto", nullable = false)
-    private Producto producto;
+
+    @ManyToMany
+    @JoinTable(
+        name = "reporte_producto", // nombre de la tabla intermedia
+        joinColumns = @JoinColumn(name = "reporte_id"), // FK a Reporte
+        inverseJoinColumns = @JoinColumn(name = "producto_id") // FK a Producto
+    )
+    private Set<Producto> productos;
 }
