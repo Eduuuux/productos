@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 import m1.productos.model.Producto;
+import m1.productos.model.TipoProducto;
 import m1.productos.repository.ProductoRepository;
 
 @Service
@@ -33,6 +34,22 @@ public class ProductoService {
         return productoRepository.findAll();
     }
 
+    public Producto findByNombreProducto(String nombreProducto) {
+        return productoRepository.findByNombreProducto(nombreProducto);
+    }
+
+    public List<Producto> findByTipoProducto(TipoProducto tipoProducto) {
+        return productoRepository.findByTipoProducto(tipoProducto);
+    }
+
+    public Producto deleteById(int id) {
+        Producto producto = productoRepository.findById(id);
+        if (producto != null) {
+            productoRepository.delete(producto);
+            return producto;
+        }
+        return null;
+    }
 
     
     public Producto updateById(int id, Producto producto) {
@@ -53,9 +70,9 @@ public class ProductoService {
             if (producto.getResena() != null) {
                 productoExistente.setResena(producto.getResena());
             }
-            productoRepository.save(productoExistente);
-            return productoExistente; // O lanzar una excepción si el producto no existe
+
+            return productoRepository.save(productoExistente);
         }
-    return null; // O lanzar una excepción si el producto no existe
+        return null;
     }
 }
