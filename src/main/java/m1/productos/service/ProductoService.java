@@ -42,13 +42,13 @@ public class ProductoService {
         return productoRepository.findByTipoProducto(tipoProducto);
     }
 
-    public Producto deleteById(int id) {
+    public boolean deleteById(int id) {
         Producto producto = productoRepository.findById(id);
         if (producto != null) {
             productoRepository.delete(producto);
-            return producto;
+            return true; 
         }
-        return null;
+        return false; 
     }
 
     

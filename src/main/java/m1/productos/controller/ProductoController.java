@@ -82,30 +82,56 @@ public class ProductoController {
     public ResponseEntity<?> updateById(
         @PathVariable int id,
         @RequestBody Producto producto,
-        @RequestParam Cargo cargo) {
-    if (cargo != Cargo.GERENTE) {
-        return new ResponseEntity<>("Solo el gerente puede actualizar productos.", HttpStatus.FORBIDDEN);
+        @RequestParam(required = false) String cargo) {
+        try {
+    
+            if (cargo == null || (!cargo.equalsIgnoreCase("GERENTE") && !cargo.equalsIgnoreCase("EMPLEADO"))) {
+                return new ResponseEntity<>("Error: El parámetro 'cargo' es inválido. Debe ser 'GERENTE' o 'EMPLEADO'.", HttpStatus.BAD_REQUEST);
+            }
+
+            Cargo cargoEnum = Cargo.valueOf(cargo.toUpperCase());
+    
+            if (cargoEnum != Cargo.GERENTE) {
+                return new ResponseEntity<>("Solo el gerente puede actualizar productos.", HttpStatus.FORBIDDEN);
+            }
+    
+            Producto productoActualizado = productoService.updateById(id, producto);
+            if (productoActualizado != null) {
+                return new ResponseEntity<>(productoActualizado, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>("Error: El parámetro 'cargo' es inválido.", HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error interno del servidor.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
-    // ...lógica de actualización...
-    Producto productoActualizado = productoService.updateById(id, producto);
-    if (productoActualizado != null) {
-        return new ResponseEntity<>(productoActualizado, HttpStatus.OK);
-    } else {
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-}
+
 
     @DeleteMapping("/eliminar/{id}")
-    public ResponseEntity<?> deleteById(@PathVariable int id, @RequestParam Cargo cargo) {
-        if (cargo != Cargo.GERENTE) {
-            return new ResponseEntity<>("Solo el gerente puede eliminar productos.", HttpStatus.FORBIDDEN);
-        }
-        Producto producto = productoService.findById(id);
-        if (producto != null) {
-            productoService.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<?> deleteById(
+        @PathVariable int id,
+        @RequestParam(required = false) String cargo) {
+        try {
+            
+            if (cargo == null || (!cargo.equalsIgnoreCase("GERENTE") && !cargo.equalsIgnoreCase("EMPLEADO"))) {
+                return new ResponseEntity<>("Error: El parámetro 'cargo' es inválido. Debe ser 'GERENTE' o 'EMPLEADO'.", HttpStatus.BAD_REQUEST);
+            }
+            Cargo cargoEnum = Cargo.valueOf(cargo.toUpperCase());
+            if (cargoEnum != Cargo.GERENTE) {
+                return new ResponseEntity<>("Solo el gerente puede eliminar productos.", HttpStatus.FORBIDDEN);
+            }
+            boolean eliminado = productoService.deleteById(id);
+            if (eliminado) {
+                return new ResponseEntity<>("Producto eliminado correctamente.", HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Producto no encontrado.", HttpStatus.NOT_FOUND);
+            }
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>("Error: El parámetro 'cargo' es inválido.", HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error interno del servidor.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

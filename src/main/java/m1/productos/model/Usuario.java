@@ -30,21 +30,7 @@ public class Usuario {
     @Column(nullable = false)
     private Cargo cargo;
 
-    public Object getNombre() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
 
-    public Object getCargo() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public void setNombre(Object nombre2) {
-        throw new UnsupportedOperationException("Unimplemented method 'setNombre'");
-    }
-
-    public void setCargo(Object cargo2) {
-        throw new UnsupportedOperationException("Unimplemented method 'setCargo'");
-    }
 
 
 }
