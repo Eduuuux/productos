@@ -23,13 +23,7 @@ public class ProductoService {
     public Producto findById(int id) {
         return productoRepository.findById(id);
     }
-    
-    
-    public Producto crearProducto(Producto producto) {
-        return productoRepository.save(producto);
-    }
-    
-    
+
     public List<Producto> findAll() {
         return productoRepository.findAll();
     }
@@ -37,6 +31,15 @@ public class ProductoService {
     public Producto findByNombreProducto(String nombreProducto) {
         return productoRepository.findByNombreProducto(nombreProducto);
     }
+    
+    public Producto crearProducto(Producto producto) {
+        return productoRepository.save(producto);
+    }
+    
+    
+
+
+
 
     public List<Producto> findByTipoProducto(TipoProducto tipoProducto) {
         return productoRepository.findByTipoProducto(tipoProducto);
@@ -46,9 +49,9 @@ public class ProductoService {
         Producto producto = productoRepository.findById(id);
         if (producto != null) {
             productoRepository.delete(producto);
-            return true; 
+            return true;
         }
-        return false; 
+        return false;
     }
 
     
@@ -73,6 +76,8 @@ public class ProductoService {
 
             return productoRepository.save(productoExistente);
         }
+
+        
         return null;
     }
 }

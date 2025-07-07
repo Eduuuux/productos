@@ -12,10 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import m1.productos.model.Cargo;
 import m1.productos.model.Producto;
 import m1.productos.model.TipoProducto;
 import m1.productos.service.ProductoService;
@@ -44,11 +42,7 @@ public class ProductoController {
 
     @PostMapping("/registrar")
     public ResponseEntity<Producto> registrar(
-            @RequestBody Producto producto,
-            @RequestParam Cargo cargo) {
-        if (cargo != Cargo.GERENTE) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
+            @RequestBody Producto producto) {
         Producto nuevoProducto = productoService.findById(producto.getId());
         if (nuevoProducto == null) {
             return new ResponseEntity<>(productoService.crearProducto(producto), HttpStatus.CREATED);
@@ -81,28 +75,14 @@ public class ProductoController {
     @PutMapping("/actualizar/{id}")
     public ResponseEntity<?> updateById(
         @PathVariable int id,
-        @RequestBody Producto producto,
-        @RequestParam(required = false) String cargo) {
+        @RequestBody Producto producto) {
         try {
-    
-            if (cargo == null || (!cargo.equalsIgnoreCase("GERENTE") && !cargo.equalsIgnoreCase("EMPLEADO"))) {
-                return new ResponseEntity<>("Error: El parámetro 'cargo' es inválido. Debe ser 'GERENTE' o 'EMPLEADO'.", HttpStatus.BAD_REQUEST);
-            }
-
-            Cargo cargoEnum = Cargo.valueOf(cargo.toUpperCase());
-    
-            if (cargoEnum != Cargo.GERENTE) {
-                return new ResponseEntity<>("Solo el gerente puede actualizar productos.", HttpStatus.FORBIDDEN);
-            }
-    
             Producto productoActualizado = productoService.updateById(id, producto);
             if (productoActualizado != null) {
                 return new ResponseEntity<>(productoActualizado, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>("Error: El parámetro 'cargo' es inválido.", HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             return new ResponseEntity<>("Error interno del servidor.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -111,25 +91,14 @@ public class ProductoController {
 
     @DeleteMapping("/eliminar/{id}")
     public ResponseEntity<?> deleteById(
-        @PathVariable int id,
-        @RequestParam(required = false) String cargo) {
+        @PathVariable int id) {
         try {
-            
-            if (cargo == null || (!cargo.equalsIgnoreCase("GERENTE") && !cargo.equalsIgnoreCase("EMPLEADO"))) {
-                return new ResponseEntity<>("Error: El parámetro 'cargo' es inválido. Debe ser 'GERENTE' o 'EMPLEADO'.", HttpStatus.BAD_REQUEST);
-            }
-            Cargo cargoEnum = Cargo.valueOf(cargo.toUpperCase());
-            if (cargoEnum != Cargo.GERENTE) {
-                return new ResponseEntity<>("Solo el gerente puede eliminar productos.", HttpStatus.FORBIDDEN);
-            }
             boolean eliminado = productoService.deleteById(id);
             if (eliminado) {
                 return new ResponseEntity<>("Producto eliminado correctamente.", HttpStatus.OK);
             } else {
                 return new ResponseEntity<>("Producto no encontrado.", HttpStatus.NOT_FOUND);
             }
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>("Error: El parámetro 'cargo' es inválido.", HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             return new ResponseEntity<>("Error interno del servidor.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -147,11 +116,7 @@ public class ProductoController {
 
     @GetMapping("/reporte/tipo/{tipoProducto}")
     public ResponseEntity<List<Producto>> getByTipo(
-            @PathVariable String tipoProducto,
-            @RequestParam Cargo cargo) {
-        if (cargo != Cargo.GERENTE) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
+            @PathVariable String tipoProducto) {
         try {
             TipoProducto tipoEnum = TipoProducto.valueOf(tipoProducto.trim().toUpperCase());
             List<Producto> productos = productoService.findByTipoProducto(tipoEnum);

@@ -42,5 +42,7 @@ public class Producto {
     @Column(nullable = false)
     private String resena;
 
+    
+
 
 }
