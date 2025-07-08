@@ -12,12 +12,10 @@ import m1.productos.model.TipoProducto;
 @Repository
 public interface ProductoRepository extends JpaRepository<Producto, Integer> {
     List<Producto> findAll();
-    
-    
-    @SuppressWarnings("unchecked")
-    Producto save(Producto producto);
 
     Producto findById(int id);
+
+    Producto save(Producto producto);
 
     Producto findByNombreProducto(String nombreProducto);
 

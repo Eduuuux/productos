@@ -26,22 +26,28 @@ public class Producto {
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
     private int id;
 
-    @Column(nullable = false)
+    @Column(name= "nombre_producto",nullable = false)
     private String nombreProducto;
 
-    @Column(nullable = false)
+    @Column(name= "Tipo",nullable = false)
     @Enumerated(EnumType.STRING)
     private TipoProducto tipoProducto;
 
-    @Column(nullable = false, length = 10)
+    @Column(name= "valor",nullable = false, length = 10)
     private int valor;
 
-    @Column(nullable = false, length = 10)
+    @Column(name= "stock",nullable = false, length = 10)
     private int stock;
 
-    @Column(nullable = false)
+    @Column(name= "reseña",nullable = false)
     private String resena;
 
+    @Column(name = "fecha_registro", nullable = false)
+    private String fechaRegistro;
+
+    @Column(name = "usuario_registrador",nullable = false)
+    private int idUsuario;
+    
     
 
 
